@@ -123,7 +123,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     game.setState(args.last_opponent_move)
-    game.execute()
+    game.Execute()
     
     if args.init != None:
         sys.exit()
