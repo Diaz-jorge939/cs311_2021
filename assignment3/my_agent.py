@@ -124,5 +124,7 @@ if __name__ == "__main__":
 
     # setting state to opponents last move
     game.setState(args.last_opponent_move)
+    initStart = args.init
+    iterations = args.iterations
     # start machine
     game.Execute()
