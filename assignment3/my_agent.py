@@ -56,7 +56,7 @@ class StateMachine(object):
     # sets state and runs the state
     def setState(self, to_state):
         self.currentState = self.states[to_state]
-        if self.currentState.state is not "zero":
+        if self.currentState.state != "zero":
             self.mood.appendleft(to_state)
             decisions = {'last_opponent_move': self.toJsonSerializable(self.mood)}
             with open('decisions.json', 'w') as file:  # self.mood.appendleft(to_state)
@@ -64,18 +64,18 @@ class StateMachine(object):
 
     def Execute(self):
         # ex. if zero.state is "zero"
-        if self.currentState.state is "zero":
+        if self.currentState.state == "zero":
             self.currentState.Execute()
         else:
-            if self.mood.count("silent") >= 4 and self.currentState.state is "silent":
+            if self.mood.count("silent") >= 4 and self.currentState.state == "silent":
                 self.Transition("toConfess")
                 self.currentState.Execute()
 
-            elif self.mood.count("silent") >= 4 and self.currentState.state is "confess":
+            elif self.mood.count("silent") >= 4 and self.currentState.state == "confess":
                 self.Transition("toSilent")
                 self.currentState.Execute()
             # case: curState: silent & self.mood.count("silent") < 4
-            elif self.currentState.state is "silent":
+            elif self.currentState.state == "silent":
                 self.currentState.Execute()
             # case: curState: confess & self.mood.count("silent") < 4
             else:
