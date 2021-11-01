@@ -121,10 +121,13 @@ if __name__ == "__main__":
     parser.add_argument('--last_opponent_move', help='last opponent move')
 
     args = parser.parse_args()
+    
+    elif args.init != None:
+        sys.exit()
 
-    # setting state to opponents last move
-    game.setState(args.last_opponent_move)
-    initStart = args.init
-    iterations = args.iterations
-    # start machine
-    game.Execute()
+    else:
+        game.setState(args.last_opponent_move)
+        game.execute()
+    
+    
+    
