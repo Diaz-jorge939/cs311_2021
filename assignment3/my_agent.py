@@ -106,14 +106,6 @@ class StateMachine(object):
 
 
 if __name__ == "__main__":
-    # initializing states and transitions
-    game = StateMachine()
-    game.states["zero"] = Zero()
-    game.states["silent"] = Silent()
-    game.states["confess"] = Confess()
-    game.transitions["toSilent"] = Silent()
-    game.transitions["toConfess"] = Confess()
-
     # receiving commandline arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('--init', help='called when new game')
@@ -121,12 +113,17 @@ if __name__ == "__main__":
     parser.add_argument('--last_opponent_move', help='last opponent move')
 
     args = parser.parse_args()
-    
+
     if args.init != None:
         sys.exit()
+
+    # initializing states and transitions
+    game = StateMachine()
+    game.states["zero"] = Zero()
+    game.states["silent"] = Silent()
+    game.states["confess"] = Confess()
+    game.transitions["toSilent"] = Silent()
+    game.transitions["toConfess"] = Confess()
     
     game.setState(args.last_opponent_move)
     game.Execute()
-    
-    
-    
