@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     
-    elif args.init != None:
+    if args.init != None:
         sys.exit()
 
     else:
