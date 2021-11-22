@@ -1,0 +1,80 @@
+import random
+import string
+
+NODE_COUNT_PER_LAYER = [4,3,2]
+
+class Node:
+    def __init__(self):
+        self.children = []
+        # Set a random name
+        self.node_name = ''.join([random.choice(string.ascii_letters) for i in range(3)])
+        self.weights = []
+
+    def make_children(self, current_layer, nodes_per_layer_map):
+        if current_layer == len(nodes_per_layer_map):
+            return
+        for i in range(nodes_per_layer_map[current_layer]):
+            self.children.append(Node())
+
+        self.children[0].make_children(current_layer + 1, nodes_per_layer_map)
+
+        for i in range(1, len(self.children)):
+            self.children[i].children = self.children[0].children[:]
+
+    def adjust_child_weight(self):
+        # recursion end condition
+        if len(self.children) == 0:
+            return
+
+        self.weights = [0.0] * len(self.children)
+        for i in range(len(self.children)):
+            self.weights[i] = random.uniform(0, 1)
+            # recurse
+            self.children[i].adjust_child_weight()
+        return
+
+    def output_children(self, layer):
+        indent = '   ' * layer
+        # recursion end case
+        if len(self.children) == 0:
+            print(f"{indent}{self.node_name}")
+            return
+
+        print(f"{indent}{self.node_name} is connected to: ")
+
+        for i in range(len(self.children)):
+            self.children[i].output_children(layer + 1)
+            # output weight if we have it
+            if i < len(self.weights):
+                print(f"{indent} with weight {self.weights[i]} ")
+
+
+# Create a master node that we can use to connect to all layers
+master_node = Node()
+
+# creating first node
+my_first_node = Node()
+
+# creating all children for first node
+my_first_node.make_children(1, NODE_COUNT_PER_LAYER)
+
+master_node.children.append(my_first_node)
+
+# duplicate the first node for all input nodes
+for i in range(0, len(NODE_COUNT_PER_LAYER)):
+    new_Node = Node()
+
+    # copy children to new node
+    new_Node.children = my_first_node.children[:]
+
+    master_node.children.append(new_Node)
+# output to check if all nodes are connected
+master_node.output_children(0)
+
+print("!! Set Weights")
+
+# initialize the weights
+master_node.adjust_child_weight()
+
+# output with weights
+master_node.output_children(0)
